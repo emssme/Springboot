@@ -34,7 +34,8 @@ public class UserController {
 
     //로그인 폼
     @GetMapping("login.do")
-    public String emailLoginForm(HttpServletRequest request, Model model) throws Exception {
+    public String emailLoginForm(HttpSession session, Model model) throws Exception {
+
         return "/user/login";
     }
 
@@ -43,9 +44,24 @@ public class UserController {
     public String emailLogin(@RequestParam String email, @RequestParam String password, HttpServletRequest request, Model model) throws Exception{
 
 
-        return "/";
+        return "redirect:/";
     }
     //아이디 로그인
+    @PostMapping("loginByName.do")
+    public String loginByNamePro(@RequestParam("name") String name, @RequestParam("password") String password, HttpSession session, Model model) throws Exception {
+        Euser user = userService.getByName(name);
+        if (user!=null) {
+            if(user.getPassword().equals(password)){
+                model.addAttribute("msg", "로그인 성공");
+                session.setAttribute("sname", user.getName());
+                session.setAttribute("slevel", user.getLev());
+            } else {
+                model.addAttribute("msg", "비밀번호 오류 로그인 실패");
+                session.invalidate();
+            }
+        }
+        return "redirect:/";
+    }
     //탈퇴
     //계정 활성화
     //휴면처리
@@ -73,9 +89,18 @@ public class UserController {
     }
     //회원가입
     @GetMapping("join.do")
-    public String joinForm(){
+    public String joinForm() throws Exception {
         return "/user/join";
     }
+    @PostMapping("join.do")
+    public String joinPro(Euser user, HttpServletRequest request, Model model) throws Exception{
+        userService.userInsert(user);
+        return "redirect:/";
+    }
     //회원정보수정
+    @GetMapping("edit.do")
+    public String editForm(Euser user, HttpServletRequest request, Model model) throws Exception{
+
+    }
     //관리자 - 회원등급 변경
 }

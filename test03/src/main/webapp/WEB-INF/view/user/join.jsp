@@ -50,24 +50,32 @@
             <form class="pure-form pure-form-aligned" action="${path}/user/join.do" method="post">
                 <fieldset>
                     <div class="pure-control-group">
-                        <label for="id">아이디</label>
-                        <input type="text" id="id" placeholder="아이디를 입력해주세요" />
+                        <label for="name">아이디</label>
+                        <input type="text" id="name" name="name" placeholder="아이디를 입력해주세요" />
                     </div>
                     <div class="pure-control-group">
                         <label for="password">비밀번호</label>
-                        <input type="password" id="password" placeholder="비밀번호를 입력해주세요" />
+                        <input type="password" id="password" name="password" placeholder="비밀번호를 입력해주세요" />
                     </div>
                     <div class="pure-control-group">
                         <label for="password2">비밀번호</label>
-                        <input type="password" id="password2" placeholder="비밀번호를 입력해주세요" />
+                        <input type="password" id="password2" name="password2" placeholder="비밀번호를 입력해주세요" />
+                    </div>
+                    <div class="pure-control-group">
+                        <label for="userName">이름</label>
+                        <input type="text" id="userName" name="userName" placeholder="비밀번호를 입력해주세요" />
                     </div>
                     <div class="pure-control-group">
                         <label for="email">이메일</label>
-                        <input type="email" id="email" placeholder="이메일을 입력해 주세요" />
+                        <input type="email" id="email" name="email" placeholder="이메일을 입력해 주세요" />
                     </div>
                     <div class="pure-control-group">
                         <label for="tel">전화번호</label>
-                        <input type="email" id="tel" placeholder="전화번호를 입력해 주세요" />
+                        <input type="tel" id="tel" name="tel" placeholder="전화번호를 입력해 주세요" />
+                    </div>
+                    <div class="pure-control-group">
+                        <label for="address">주소</label>
+                        <input type="text" id="address" name="address" placeholder="전화번호를 입력해 주세요" />
                     </div>
                     <input type="submit" value="가입" class="pure-button pure-button-primary">
                 </fieldset>
