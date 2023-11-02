@@ -21,3 +21,4 @@ INSERT INTO euser VALUES (DEFAULT, 'parkbk', '1234', '박보경', 'parkbk@edu.co
 INSERT INTO euser VALUES (DEFAULT, 'admin', '1234', '관리자', 'admin@edu.com', NULL, NULL, DEFAULT, DEFAULT, DEFAULT);
 
 COMMIT;
+SELECT * from euser;

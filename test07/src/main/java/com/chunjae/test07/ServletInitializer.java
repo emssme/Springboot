@@ -1,4 +1,4 @@
-package com.chunjae.test06;
+package com.chunjae.test07;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -7,7 +7,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Test06Application.class);
+        return application.sources(Test07Application.class);
     }
 
 }
