@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.chunjae.test03.per.UserMapper">
-    <select id="getUserList" resultType="com.chunjae.test03.entity.Euser">
+<mapper namespace="com.chunjae.test05.per.UserMapper">
+    <select id="getUserList" resultType="com.chunjae.test05.entity.Euser">
         select * from euser order by id desc
     </select>
 
-    <select id="getUser" resultType="com.chunjae.test03.entity.Euser">
+    <select id="getUser" resultType="com.chunjae.test05.entity.Euser">
         select * from euser where name=#{name}
     </select>
 
@@ -25,20 +25,20 @@
     </update>
 
     <!-- 이메일 로그인 -->
-    <select id="getByEmail" resultType="com.chunjae.test03.entity.Euser">
+    <select id="getByEmail" resultType="com.chunjae.test05.entity.Euser">
         select * from euser where email=#{email}
     </select>
     <!-- 아이디 로그인 -->
-    <select id="getByName" resultType="com.chunjae.test03.entity.Euser">
+    <select id="getByName" resultType="com.chunjae.test05.entity.Euser">
         select * from euser where name=#{name}
     </select>
 
     <!-- 아이디 찾기 -->
-    <select id="findById" resultType="com.chunjae.test03.entity.Euser">
+    <select id="findById" resultType="com.chunjae.test05.entity.Euser">
         select * from euser where email=#{email} and tel=#{tel}
     </select>
     <!-- 비밀번호 찾기 -->
-    <select id="findByPw" resultType="com.chunjae.test03.entity.Euser">
+    <select id="findByPw" resultType="com.chunjae.test05.entity.Euser">
         select * from euser where email=#{email} and tel=#{tel} and name=#{name}
     </select>
     <!-- 회원가입 -->
