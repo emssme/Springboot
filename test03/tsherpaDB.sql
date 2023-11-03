@@ -1,1 +1,20 @@
 USE tsherpa;
+
+CREATE TABLE role(
+	role_id INT PRIMARY key AUTO_INCREMENT,
+	ROLE VARCHAR(255) DEFAULT NULL);
+	
+CREATE TABLE user(	user_id INT PRIMARY KEY AUTO_INCREMENT,
+	active INT DEFAULT 0,
+	login_id VARCHAR(255) NOT NULL,
+	user_name VARCHAR(255) NOT NULL,
+	password VARCHAR(300) NOT null);
+	
+CREATE TABLE user_role(
+	user_id INT NOT NULL,
+	role_id INT NOT NULL,
+	PRIMARY KEY (user_id, role_id));
+	
+DESC ROLE;
+DESC USER;
+DESC user_role;

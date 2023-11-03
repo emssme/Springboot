@@ -1,0 +1,12 @@
+스프링시큐리티 설정 관리자
+		SecurityFilterChain				configure
+		@Configuration					@Configuration과 @EnableWebSecurity
+		한 곳에서 					configure를 오버로딩하여 각 각 설정
+자원접근		SecurityFilterChain				WebSecurity 매개변수
+인터셉터		SecurityFilterChain				HttpSecurity 매개변수
+인증관리		AuthenticationProvider 인터페이스 상속		AuthenticationManagerBuilder 매개변수
+상위클래스	없음						WebSecurityConfigurerAdapter 클래스를 상속받아 설정		
+	
+	※ SecurityFilterChain 는 spring security 5.7.x 부터 활용 권장하며, 6.x.x 는 기본 사용임.
+	※ SecurityFilterChain 는 spring security 5.x.x 는  .antMatchers()로
+						6.x.x는 .requestMatchers()와 AntPathRequestMatcher 클래스로 퍼미션 설정
