@@ -14,9 +14,9 @@ public interface UserMapper {
     void getDormant(String name);
     Euser getByEmail(String email);
     Euser getByName(String name);
-    Euser findById(Euser user);
-    Euser findByPw(Euser user);
-    void userInsert(Euser user);
-    void userEdit(Euser user);
-    void userLevel(Euser user);
+    Euser findById(String email, String tel);
+    Euser findByPw(String email, String tel, String name);
+    void userJoin(Euser euser);
+    void updateUser(Euser euser);
+    void updateLevel(String name, String lev);
 }

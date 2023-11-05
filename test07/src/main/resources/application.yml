@@ -1,44 +1,28 @@
-# server
 server:
   port: 8086
-#  servlet:
-#    # 안하면 root로 잡힘
-#    context-path: /pro05
-
 spring:
   profile:
     active: local
-  # thymeleaf
   thymeleaf:
     check-template-location: true
     prefix: classpath:/templates/
     suffix: .html
-    # *.jsp 인식 못함(사용불가)
     cache: false
-  # static
   mvc:
-    # css, js 등의 파일
     static-path-pattern: /static/**
-    # method(PUT/DELETE)
     hidden-method:
       filter:
         enabled: true
-  # mariaDB
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/tsherpa
     username: root
     password: 1234
-
-# MyBatis
 mybatis:
   configuration:
-    # underscore DB 컬럼명을 camel case 로 인식
     map-underscore-to-camel-case: true
   type-aliases-package: com.chunjae.test07.entity
   mapper-locations: mappers/**/*.xml
-
-# log
 logging:
   config: classpath:logback.xml
 

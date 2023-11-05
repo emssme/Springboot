@@ -9,14 +9,17 @@ import java.util.List;
 public interface UserMapper {
     List<Euser> getUserList();
     Euser getUser(String name);
-    void getWithdraw(String name);
-    void getActivate(String name);
-    void getDormant(String name);
+    int getWithdraw(String name);
+    int getActivate(String name);
+    int getDormant(String name);
     Euser getByEmail(String email);
     Euser getByName(String name);
-    Euser findById(Euser user);
-    Euser findByPw(Euser user);
-    void userInsert(Euser user);
-    void userEdit(Euser user);
-    void userLevel(Euser user);
+    Euser findById(String email, String tel);
+    Euser findByPw(String email, String tel, String name);
+    int userJoin(Euser euser);
+    int updateUser(Euser euser);
+    int updateLevel(String name, String lev);
+    int removeUser(String name);
+    Euser getUserById(Integer id);
+    int updatePasswordNoChange(Euser euser);
 }

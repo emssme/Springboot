@@ -7,7 +7,7 @@ public class Euser {
     private Integer id;
     private String name;
     private String password;
-    private String userName;
+    private String username;
     private String email;
     private String address;
     private String tel;

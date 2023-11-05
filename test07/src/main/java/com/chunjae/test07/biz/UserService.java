@@ -36,7 +36,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(1);
         userMapper.setUserInfo(user);
-        Role role = roleMapper.getRoleInfo("ADMIN");
+        Role role = roleMapper.getRoleInfo("USER");
         UserRole userRole = new UserRole();
         userRole.setRoleId(role.getId());
         userRole.setUserId(user.getId());

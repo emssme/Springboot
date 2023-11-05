@@ -2,6 +2,7 @@ package com.chunjae.test07.domain;
 
 import com.chunjae.test07.entity.User;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,7 +13,6 @@ import java.util.Collection;
 @Data
 public class UserPrincipal implements UserDetails {
 
-    //entity 의 User를 항목으로 불러옴
     private User user;
 
     public UserPrincipal(User user){
@@ -34,7 +34,6 @@ public class UserPrincipal implements UserDetails {
         return user.getUserName();
     }
 
-    // 계정 있으면 true
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -50,13 +49,12 @@ public class UserPrincipal implements UserDetails {
         return true;
     }
 
-    //active 상태가 0이면 false, 1이면 true
     @Override
     public boolean isEnabled() {
         return user.getActive() == 1;
     }
 
-    public String getId(){
+    public String getId() {
         return user.getLoginId();
     }
 

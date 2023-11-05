@@ -1,20 +1,25 @@
 package com.chunjae.test05.biz;
 
 import com.chunjae.test05.entity.Euser;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
 public interface UserService {
     public List<Euser> getUserList();
     public Euser getUser(String name);
-    public void getWithdraw(String name);
-    public void getActivate(String name);
-    public void getDormant(String name);
+    public int getWithdraw(String name);
+    public int getActivate(String name);
+    public int getDormant(String name);
     public Euser getByEmail(String email);
     public Euser getByName(String name);
-    public Euser findById(Euser user);
-    public Euser findByPw(Euser user);
-    public void userInsert(Euser user);
-    public void userEdit(Euser user);
-    public void userLevel(Euser user);
+    public Euser findById(String email, String tel);
+    public Euser findByPw(String email, String tel, String name);
+    public int userJoin(Euser euser);
+    public int updateUser(Euser euser);
+    public int updateLevel(String name, String lev);
+    public int removeUser(String name);
+    public PasswordEncoder passwordEncoder();
+    public Euser getUserById(Integer id);
+    public int updatePasswordNoChange(Euser euser);
 }

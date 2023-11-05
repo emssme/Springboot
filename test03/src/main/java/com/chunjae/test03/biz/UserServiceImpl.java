@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserMapper userMapper;
 
@@ -48,27 +49,27 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Euser findById(Euser user) {
-        return userMapper.findById(user);
+    public Euser findById(String email, String tel) {
+        return userMapper.findById(email, tel);
     }
 
     @Override
-    public Euser findByPw(Euser user) {
-        return userMapper.findByPw(user);
+    public Euser findByPw(String email, String tel, String name) {
+        return userMapper.findByPw(email, tel, name);
     }
 
     @Override
-    public void userInsert(Euser user) {
-        userMapper.userInsert(user);
+    public void userJoin(Euser euser) {
+        userMapper.userJoin(euser);
     }
 
     @Override
-    public void userEdit(Euser user) {
-        userMapper.userEdit(user);
+    public void updateUser(Euser euser) {
+        userMapper.updateUser(euser);
     }
 
     @Override
-    public void userLevel(Euser user) {
-        userMapper.userLevel(user);
+    public void updateLevel(String name, String lev) {
+        userMapper.updateLevel(name, lev);
     }
 }

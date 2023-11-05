@@ -2,124 +2,137 @@ package com.chunjae.test05.ctrl;
 
 import com.chunjae.test05.biz.UserService;
 import com.chunjae.test05.entity.Euser;
-import com.chunjae.test05.exception.NoSuchDataException;
-import com.chunjae.test05.util.EmailSocket;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:8085")
 @Controller
-@RequestMapping("/user/")
 public class UserController {
+
     @Autowired
     private UserService userService;
 
-    @GetMapping("list.do")
-    public String userList(Model model) throws Exception {
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    @GetMapping("/")
+    public String home(Model model){
+        return "index";
+    }
+
+    @GetMapping("/admin/userList")
+    public String getUserList(Model model) { // User 테이블의 전체 정보를 보여줌
         List<Euser> userList = userService.getUserList();
-        model.addAttribute("userList", userList);
-        return "/user/userList";
+        model.addAttribute("list", userList);
+        return "admin/list";
     }
 
-    @GetMapping("detail.do")
-    public String getUser(@RequestParam String name, Model model) throws Exception{
-        Euser getUser = userService.getUser(name);
-        model.addAttribute("detail", getUser);
-        return "/user/getUser";
+    @GetMapping("/admin/get")
+    public String getUser(@RequestParam("name") String name, Model model) { // User 테이블의 전체 정보를 보여줌
+        Euser user = userService.getUser(name);
+        model.addAttribute("user", user);
+        return "admin/get";
     }
 
-    //로그인 폼
-    @GetMapping("login.do")
-    public String emailLoginForm(HttpSession session, Model model) throws Exception {
-
-        return "/user/login";
+    @GetMapping("/user")
+    public String getUserInfo(@RequestParam("id") Integer id, Model model) { // User 테이블의 전체 정보를 보여줌
+        // token에 저장되어 있는 인증된 사용자의 id 값
+        Euser user = userService.getUserById(id);
+        user.setPassword(null); // password는 보이지 않도록 null로 설정
+        model.addAttribute("user", user);
+        return "user/get";
     }
 
-    //이메일 로그인
-    @PostMapping("emailLogin.do")
-    public String emailLogin(@RequestParam String email, @RequestParam String password, HttpServletRequest request, Model model) throws Exception{
-
-
+    @GetMapping("/login")
+    public String loginPage() { // 로그인되지 않은 상태이면 로그인 페이지를, 로그인된 상태이면 home 페이지를 보여줌
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken)
+            return "login";
         return "redirect:/";
     }
-    //아이디 로그인
-    @PostMapping("loginByName.do")
-    public String loginByNamePro(@RequestParam("name") String name, @RequestParam("password") String password, HttpSession session, Model model) throws Exception {
-        Euser user = userService.getByName(name);
-        if (user!=null) {
-            if(user.getPassword().equals(password)){
-                model.addAttribute("msg", "로그인 성공");
-                session.setAttribute("sname", user.getName());
-                session.setAttribute("slevel", user.getLev());
-            } else {
-                model.addAttribute("msg", "비밀번호 오류 로그인 실패");
-                session.invalidate();
-            }
+
+    @GetMapping("/signup")
+    public String signupPage() {  // 회원 가입 페이지
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken)
+            return "join";
+        return "redirect:/";
+    }
+
+    @PostMapping("/signup")
+    public String signup(Euser userVo) { // 회원 가입
+        try {
+            userService.userJoin(userVo);
+        } catch (DuplicateKeyException e) {
+            return "redirect:/signup?error_code=-1";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/signup?error_code=-99";
         }
-        return "redirect:/";
+        return "redirect:/login";
     }
-    //탈퇴
-    //계정 활성화
-    //휴면처리
-    //아이디 찾기
-    //비밀번호호 찾기
-    @PostMapping("/loginByEmail.do")
-    public String loginByEmailPro(Euser euser, HttpSession session, Model model){
-        Euser user = userService.getByEmail(euser.getEmail());
-        if (user!=null){
-            if (user.getPassword().equals(euser.getPassword())){
-                model.addAttribute("msg","로그인 성공");
-                session.setAttribute("sname", user.getName());
-            } else {
-                model.addAttribute("msg","비밀번호 오류");
-                session.invalidate();
-            }
+
+    @GetMapping("/update")
+    public String editPage(@RequestParam("name") String name, Model model) { // 회원 정보 수정 페이지
+        Euser userVo = userService.getByName(name);
+        model.addAttribute("user", userVo);
+        return "user/updateUser";
+    }
+
+    @PostMapping("/update")
+    public String edit(Euser user) { // 회원 정보 수정
+        Euser euser = userService.getUserById(user.getId());
+        int cnt = 0;
+        if(user.getPassword().equals(euser.getPassword())){
+            cnt = userService.updatePasswordNoChange(user);
         } else {
-            model.addAttribute("msg", "해당 이메일을 가진 회원이 존재하지 않습니다.");
+            cnt = userService.updateUser(user);
         }
-        return "redirect:/login.do";
-    }
-    public void sendMail(Euser euser){
-        EmailSocket dm = new EmailSocket();
-        dm.sendMail(euser);
-    }
-    //회원가입
-    @GetMapping("join.do")
-    public String joinForm() throws Exception {
-        return "/user/join";
-    }
-    @PostMapping("join.do")
-    public String joinPro(Euser user, HttpServletRequest request, Model model) throws Exception{
-        userService.userInsert(user);
         return "redirect:/";
     }
-    //회원정보수정
-    @GetMapping("userUpdate.do")
-    public String userUpdateForm() throws Exception{
-        return "/user/userUpdate";
-    }
 
-    //관리자 - 회원등급 변경
-
-    //회원목록 API
-    @GetMapping("userList.do")
-    @ResponseBody
-    public List<Euser> getUSerList(Model model) {
-        List<Euser> userList = userService.getUserList();
-        if (userList.isEmpty()){
-            throw new NoSuchDataException("No Such Data");
+    @PostMapping("/delete")
+    public String withdraw(@RequestParam("name") String name, HttpSession session) { // 회원 탈퇴
+        if (name != null) {
+            userService.getWithdraw(name);
         }
-        model.addAttribute("userList", userList);
-        return userList;
+        SecurityContextHolder.clearContext(); // SecurityContextHolder에 남아있는 token 삭제
+        return "redirect:/";
     }
 
-    //회원정보 API
+    //중복 id 검증(Ajax)
+    @PostMapping("/idCheck")
+    @ResponseBody
+    public boolean idCheckAjax(@RequestParam("name") String name){
+        boolean result = false;
+        Euser user = userService.getByName(name);
+        if(user!=null){
+            result = false;
+        } else {
+            result = true;
+        }
+        return result;
+    }
 
-    //회원정보 수정API
-
+    //중복 이메일 검증(Ajax)
+    @PostMapping("/emailCheck")
+    @ResponseBody
+    public boolean emailCheckAjax(@RequestParam("email") String email){
+        Euser user = userService.getByEmail(email);
+        if(user!=null){
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

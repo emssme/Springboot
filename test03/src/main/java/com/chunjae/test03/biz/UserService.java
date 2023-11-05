@@ -12,9 +12,9 @@ public interface UserService {
     public void getDormant(String name);
     public Euser getByEmail(String email);
     public Euser getByName(String name);
-    public Euser findById(Euser user);
-    public Euser findByPw(Euser user);
-    public void userInsert(Euser user);
-    public void userEdit(Euser user);
-    public void userLevel(Euser user);
+    public Euser findById(String email, String tel);
+    public Euser findByPw(String email, String tel, String name);
+    public void userJoin(Euser euser);
+    public void updateUser(Euser euser);
+    public void updateLevel(String name, String lev);
 }

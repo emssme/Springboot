@@ -3,14 +3,19 @@ package com.chunjae.test05.biz;
 import com.chunjae.test05.entity.Euser;
 import com.chunjae.test05.per.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserMapper userMapper;
+
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public List<Euser> getUserList() {
@@ -19,22 +24,23 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public Euser getUser(String name) {
-        return userMapper.getUser(name);
+        Euser euser = userMapper.getUser(name);
+        return euser;
     }
 
     @Override
-    public void getWithdraw(String name) {
-        userMapper.getWithdraw(name);
+    public int getWithdraw(String name) {
+        return userMapper.getWithdraw(name);
     }
 
     @Override
-    public void getActivate(String name) {
-        userMapper.getActivate(name);
+    public int getActivate(String name) {
+        return userMapper.getActivate(name);
     }
 
     @Override
-    public void getDormant(String name) {
-        userMapper.getDormant(name);
+    public int getDormant(String name) {
+        return userMapper.getDormant(name);
     }
 
     @Override
@@ -48,27 +54,47 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Euser findById(Euser user) {
-        return userMapper.findById(user);
+    public Euser findById(String email, String tel) {
+        return userMapper.findById(email, tel);
     }
 
     @Override
-    public Euser findByPw(Euser user) {
-        return userMapper.findByPw(user);
+    public Euser findByPw(String email, String tel, String name) {
+        return userMapper.findByPw(email, tel, name);
     }
 
     @Override
-    public void userInsert(Euser user) {
-        userMapper.userInsert(user);
+    public int userJoin(Euser euser) {
+        euser.setPassword(passwordEncoder.encode(euser.getPassword()));
+        return userMapper.userJoin(euser);
     }
 
     @Override
-    public void userEdit(Euser user) {
-        userMapper.userEdit(user);
+    public int updateUser(Euser euser) {
+        euser.setPassword(passwordEncoder.encode(euser.getPassword()));
+        return userMapper.updateUser(euser);
     }
 
     @Override
-    public void userLevel(Euser user) {
-        userMapper.userLevel(user);
+    public int updateLevel(String name, String lev) {
+        return userMapper.updateLevel(name, lev);
+    }
+
+    @Override
+    public int removeUser(String name) { return userMapper.removeUser(name);    }
+
+    @Override
+    public PasswordEncoder passwordEncoder() {
+        return this.passwordEncoder;
+    }
+
+    @Override
+    public Euser getUserById(Integer id) {
+        return userMapper.getUserById(id);
+    }
+
+    @Override
+    public int updatePasswordNoChange(Euser euser) {
+        return userMapper.updatePasswordNoChange(euser);
     }
 }

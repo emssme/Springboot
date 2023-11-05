@@ -40,11 +40,14 @@
     </select>
     <!-- 회원가입 -->
     <insert id="userJoin">
-        INSERT INTO euser VALUES (DEFAULT, #{name}, #{password}, #{userName}, #{email}, #{address}, #{tel}, DEFAULT, DEFAULT, DEFAULT)
+        INSERT INTO euser VALUES (DEFAULT, #{name}, #{password}, #{username}, #{email}, #{address}, #{tel}, DEFAULT, DEFAULT, DEFAULT)
     </insert>
     <!-- 회원정보수정 -->
     <update id="updateUser">
         UPDATE euser SET password=#{password}, username=#{username}, address=#{address}, tel=#{tel} WHERE name = #{name}
+    </update>
+    <update id="updatePasswordNoChange">
+        UPDATE euser SET username=#{username}, address=#{address}, tel=#{tel} WHERE name = #{name}
     </update>
     <update id="updateLevel">
         UPDATE euser SET lev=#{lev} WHERE name = #{name}

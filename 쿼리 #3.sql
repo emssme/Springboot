@@ -1,3 +1,4 @@
+edumonCREATE DATABASE edumon;
 USE edumon;
 
 CREATE TABLE euser(
@@ -22,3 +23,15 @@ INSERT INTO euser VALUES (DEFAULT, 'admin', '1234', '관리자', 'admin@edu.com'
 
 COMMIT;
 SELECT * from euser;
+
+CREATE TABLE board(
+  seq INT PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(200) NOT NULL,
+  content VARCHAR(1000),
+  author VARCHAR(20),
+  regdate DATETIME DEFAULT CURRENT_TIMESTAMP(),
+  visited INT DEFAULT 0,
+  rec INT DEFAULT 0
+);
+
+INSERT INTO board(title, content, author) VALUES('게시글1 제목', '게시글1내용','kimbk');

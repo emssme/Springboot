@@ -11,18 +11,19 @@ import java.util.List;
 
 @Controller
 public class Test1Controller {
+
     @Autowired
     private Test1Mapper test1Mapper;
 
     @GetMapping("/test1/getList.do")
     @ResponseBody
-    public List<Test1> getTestList() {
+    public List<Test1> getTestList(){
         return test1Mapper.getList();
     }
 
     @GetMapping("/test1/getList2.do")
     @ResponseBody
-    public List<Test1> getTestList2() {
+    public List<Test1> getTestList2(){
         return test1Mapper.getList2();
     }
 }

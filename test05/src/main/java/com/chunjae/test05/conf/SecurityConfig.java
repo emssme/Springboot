@@ -1,4 +1,6 @@
 package com.chunjae.test05.conf;
+
+
 import com.chunjae.test05.biz.UserService;
 import com.chunjae.test05.biz.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -14,17 +16,22 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import java.util.Arrays;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     @Bean
     public UserService userService() { return new UserServiceImpl();  }
+
     //passwordEncoder 빈 등록
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         //공통 접근 설정
@@ -35,23 +42,25 @@ public class SecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher("/signup")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/idCheck")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/emailCheck")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/joinPro")).permitAll()
                 .anyRequest().authenticated());
         //로그인 설정
         http.formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/auth")
-                .usernameParameter("name")
-                .passwordParameter("password")
-                .defaultSuccessUrl("/")
-                .failureForwardUrl("/");
+            .loginPage("/login")
+            .loginProcessingUrl("/auth")
+            .usernameParameter("name")
+            .passwordParameter("password")
+            .defaultSuccessUrl("/");
         //로그아웃 설정
-        http.logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/");
-        http.cors().and().csrf().disable();
-        //http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-        return http.build();
+         http.logout()
+            .logoutUrl("/logout")
+            .invalidateHttpSession(true)
+            .logoutSuccessUrl("/");
+
+         http.cors().and().csrf().disable();
+         return http.build();
     }
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

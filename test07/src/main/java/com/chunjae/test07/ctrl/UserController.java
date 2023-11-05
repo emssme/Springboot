@@ -23,67 +23,66 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/")
+    @GetMapping( "/")
     public String home(Model model){
         Human human = new Human();
-        human.setName("김보경");
-        human.setAge(26);
+        human.setName("김천재");
+        human.setAge(39);
 
         List<Human> hList = new ArrayList<>();
-        for (int i = 0; i<4; i++){
+
+        for(int i=0;i<4;i++){
             Human h = new Human();
-            h.setName("김보경"+i);
-            h.setAge(i+26);
+            h.setName("김나연"+i);
+            h.setAge(i+25);
             hList.add(h);
         }
-
-        model.addAttribute("human", human);
         model.addAttribute("hList", hList);
-        model.addAttribute("attrName","임의필드");
-        return "index";
+        model.addAttribute("human", human);
+        model.addAttribute("attrName", "임의필드");
+        return "/user/index";
     }
-    @GetMapping(value = {"/", "login"})
+
+    @GetMapping( "/login")
     public ModelAndView getLoginPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("user/login");
         return modelAndView;
     }
 
-    @GetMapping("registration")
+    @GetMapping("/registration")
     public ModelAndView getRegistrationPage() {
         ModelAndView modelAndView = new ModelAndView();
         User user = new User();
         modelAndView.addObject("user", user);
-        modelAndView.setViewName("user/registration");
+        modelAndView.setViewName("/user/registration");
 
         return modelAndView;
     }
 
     //@Valid
-    @PostMapping("registration")
+    @PostMapping("/registration")
     public ModelAndView createNewUser(User user, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
         User userExists = userService.findUserByLoginId(user.getLoginId());
         if (userExists != null) {
             bindingResult
-                    .rejectValue("loginId", "error.loginId",
-                            "There is already a user registered with the loginId provided");
+                    .rejectValue("loginId", "error.loginId","There is already a user registered with the loginId provided");
         }
 
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("user/registration");
+            modelAndView.setViewName("/user/registration");
         } else {
             userService.saveUser(user);
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.addObject("user", new User());
-            modelAndView.setViewName("user/registration");
+            modelAndView.setViewName("/user/registration");
         }
-
         return modelAndView;
     }
 
-    @GetMapping("home")
+    @GetMapping("/home")
     public ModelAndView home(){
         ModelAndView modelAndView = new ModelAndView();
 
@@ -94,16 +93,14 @@ public class UserController {
 
         modelAndView.addObject("userName", "Welcome " + userPrincipal.getName() + " (" + userPrincipal.getId() + ")");
         modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
-        modelAndView.setViewName("user/home");
+        modelAndView.setViewName("/user/home");
         return modelAndView;
     }
 
-    @GetMapping("exception")
+    @GetMapping("/exception")
     public ModelAndView getUserPermissionExceptionPage() {
         ModelAndView mv = new ModelAndView();
-
-        mv.setViewName("user/access-denied");
-
+        mv.setViewName("/user/access-denied");
         return mv;
     }
 }

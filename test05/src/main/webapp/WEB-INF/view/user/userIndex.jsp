@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +7,6 @@
     <title>User</title>
 </head>
 <body>
-<h2>userIndex</h2>
+    <h2>/user/userIndex</h2>
 </body>
 </html>
