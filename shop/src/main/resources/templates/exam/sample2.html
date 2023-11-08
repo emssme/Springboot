@@ -3,9 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
+    <title>Sample2 - 컬렉션</title>
 </head>
 <body>
-
+<h2>리스트(List)</h2>
+<hr>
+<div th:text="${list}"></div>
+<hr>
+<div>
+    <th:block th:each="str : ${ list }">
+        <span>[[${list}]]</span>
+    </th:block>
+</div>
+<hr>
+<h2>맵(Map)</h2>
+<div th:text="${map}"></div>
+<hr>
+<div>[[${map}]]</div>
+<hr>
+<h2>셋(Set)</h2>
+<div th:text="${set}"></div>
+<hr>
+<div>[[${set}]]</div>
+<script th:inline="javascript">
+    const list = [[${list}]];
+    const map = [[${map}]];
+    const set = [[${set}]];
+    console.log(list);
+    console.log(map);
+    console.log(set);
+</script>
 </body>
 </html>

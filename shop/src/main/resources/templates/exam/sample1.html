@@ -6,15 +6,66 @@
     <title>Sample1 - 문자열 리스트</title>
 </head>
 <body>
-<h2>Sample1 - 문자열 리스트</h2>
-<hr>
-<ul th:each="str : ${names}">
-    <li th:text="${str}"></li>
-</ul>
-<div>
-    <p th:text="${sample.p1}"></p>
-    <p th:text="${sample.p2}"></p>
-    <p th:text="${sample.p3}"></p>
-</div>
+    <h2>Sample1 - 문자열 리스트</h2>
+    <hr>
+    <h3> div 태그 반복</h3>
+    <div th:text="${names}"></div>
+    <div>[[${names}]]</div>
+    <hr>
+    <h3> ul 태그 반복</h3>
+    <ul th:each="str : ${names}">
+        <li th:text="${str}"></li>
+    </ul>
+    <hr>
+    <h3> th:block 으로 쓰기 - li 태그 반복</h3>
+    <ul>
+        <th:block th:each="str : ${names}">
+            <li th:text="${str}"></li>
+        </th:block>
+    </ul>
+    <hr>
+    <h3> th:each </h3>
+    <ul>
+        <li th:each="str : ${names}">[[${str}]]</li>
+    </ul>
+    <ul>
+        <li th:each="str : ${names}" th:text="${str}"></li>
+    </ul>
+    <hr>
+    <h3>홀수</h3>
+    <ul th:each="str, status : ${names}">
+        <li th:if="${status.odd }">ODD - [[${str}]]</li>
+        <li th:unless="${status.odd }">EVEN - [[${str}]]</li>
+    </ul>
+    <hr>
+    <h3>짝수</h3>
+    <ul th:each="str, status : ${names}">
+        <li th:if="${status.even }">EVEN - [[${str}]]</li>
+        <li th:unless="${status.even }">ODD - [[${str}]]</li>
+    </ul>
+    <hr>
+    <h3>삼항연산자</h3>
+    <ul th:each="str, status : ${names}">
+        <li th:text="${status.odd} ? 'ODD - '+${str} : 'EVEN - '+${str}"></li>
+    </ul>
+    <hr>
+    <h3>switch 문</h3>
+    <p> div = th:block </p>
+    <p> index : 0부터 시작</p>
+    <ul>
+        <li th:each="str, status : ${names}">
+            <!-- index의 값에 따라 표현 -->
+            <th:block th:switch="${status.index % 3}">
+                <span th:case="0">3n : [[${str}]]</span>
+                <span th:case="1">3n+1 : [[${str}]]</span>
+                <span th:case="2">3n+2 : [[${str}]]</span>
+            </th:block>
+        </li>
+    </ul>
+    <div>
+        <p th:text="${sample.p1}"></p>
+        <p th:text="${sample.p2}"></p>
+        <p th:text="${sample.p3}"></p>
+    </div>
 </body>
 </html>
