@@ -1,0 +1,7 @@
+package com.shop2.per;
+
+import com.shop2.domain.Board;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BoardRepository extends JpaRepository<Board, Long>, BoardSearch {
+}

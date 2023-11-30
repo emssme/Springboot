@@ -1,0 +1,6 @@
+CREATE DATABASE estore;
+USE  estore;
+
+SHOW TABLES;
+SELECT * FROM board;
+DROP TABLE board;
