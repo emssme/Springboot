@@ -5,6 +5,7 @@ import com.jpastudy.domain.QBoard;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
@@ -69,6 +70,10 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
         this.getQuerydsl().applyPagination(pageable, query);
         List<Board> list = query.fetch();
         long count = query.fetchCount();
-        return null;
+        // PageImpl 을 이용한 Page<T> 반환
+        // List<T> : 실제 목록 데이터
+        // Pageable : 페이지 관련 정보를 가진 객체
+        // long : 전체 개수
+        return new PageImpl<>(list, pageable, count);
     }
 }
