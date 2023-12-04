@@ -2,6 +2,7 @@ package com.jpastudy.repository.search;
 
 import com.jpastudy.domain.Board;
 import com.jpastudy.domain.QBoard;
+import com.jpastudy.dto.PageDTO;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;
@@ -75,5 +76,40 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
         // Pageable : 페이지 관련 정보를 가진 객체
         // long : 전체 개수
         return new PageImpl<>(list, pageable, count);
+    }
+
+    @Override
+    public Page<Board> searchPage(Pageable pageable, PageDTO pageDTO) {
+        QBoard board = QBoard.board;
+
+        JPQLQuery<Board> query = from(board);
+
+        String[] types = pageDTO.getTypes();
+        String keyword = pageDTO.getKeyword();
+
+        if(types!=null && keyword!=null && !keyword.isEmpty()){
+            BooleanBuilder booleanBuilder = new BooleanBuilder();
+            for(String type: types){
+                System.out.println(type);
+                switch(type){
+                    case "title":
+                        booleanBuilder.or(board.title.contains(keyword));
+                        break;
+                    case "content":
+                        booleanBuilder.or(board.content.contains(keyword));
+                        break;
+                    case "author":
+                        booleanBuilder.or(board.author.contains(keyword));
+                        break;
+                }
+            }
+            query.where(booleanBuilder);
+        }
+
+        // 부모 클래스인 QuerydslRepositorySupport 를 상속하면서 BoardSearchImpl(this)에  querydsl 필드가 있음
+        this.getQuerydsl().applyPagination(pageable, query);
+        List<Board> list = query.fetch();
+
+        return new PageImpl<>(list, pageable, query.fetchCount());
     }
 }

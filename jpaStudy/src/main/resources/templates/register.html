@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <th:block th:replace="/include/fragment :: head" ></th:block>
+    <title>게시글 등록</title>
+</head>
+<body>
+<th:block th:replace="/include/fragment :: header" ></th:block>
+<div class="container">
+    <h1>BoardRegister</h1>
+    <form th:action="@{/board/register}" method="post">
+        <table>
+            <input type="hidden" name="author" id="author" value="작성자">
+            <tr>
+                <th>제목</th>
+                <td>
+                    <input type="text" id="title" name="title" maxlength="100">
+                </td>
+            </tr>
+            <tr>
+                <th>내용</th>
+                <td>
+                    <textarea name="content" id="content" cols="30" rows="10"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="submit">등록</button></td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

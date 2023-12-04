@@ -27,6 +27,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     // QueryDsl
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
@@ -51,7 +52,7 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-def querydslDir = "src/main/generated"
+def querydslDir = "$projectDir/build/generated"
 tasks.withType(JavaCompile) {
     options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
 }
@@ -60,6 +61,8 @@ sourceSets {
     main.java.srcDirs += [ querydslDir ]
 }
 
+/*
 clean {
     delete file(querydslDir)
 }
+*/
