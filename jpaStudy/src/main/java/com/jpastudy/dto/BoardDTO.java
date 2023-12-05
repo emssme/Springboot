@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -16,4 +18,7 @@ public class BoardDTO {
     private String author;
     private String regDate;
     private String modDate;
+
+    // 첨부파일의 이름들
+    private List<String> fileNames;     // Board 에서 Set<BoardImage> 타입으로 변환되어야 함
 }

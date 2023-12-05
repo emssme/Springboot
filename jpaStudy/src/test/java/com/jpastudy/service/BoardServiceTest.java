@@ -12,7 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootTest
 public class BoardServiceTest {
@@ -57,5 +59,60 @@ public class BoardServiceTest {
         pageDTO.entity2dto(result, BoardDTO.class);
         List<BoardDTO> boardList = pageDTO.getListDTO();
         boardList.forEach(b-> System.out.println("SEARCH RESULT: "+b));
+    }
+
+    @Test
+    public void testRegisterWithImages(){
+        logger.info(boardService.getClass().getName());
+        BoardDTO boardDTO = BoardDTO.builder()
+                .title("파일 업로드 테스트")
+                .content("파일 업로드 테스트 내용")
+                .author("작성자")
+                .build();
+
+        boardDTO.setFileNames(
+                Arrays.asList(
+                        UUID.randomUUID() + "_aaa.jpg",
+                        UUID.randomUUID() + "_bbb.jpg",
+                        UUID.randomUUID() + "_ccc.jpg"
+                )
+        );
+
+        Long bno = boardService.register(boardDTO);
+        logger.info("bno : " + bno);
+    }
+
+    // 게시글 조회
+    @Test
+    public void testReadAll(){
+        Long bno = 106L;
+        BoardDTO boardDTO = boardService.readOne(bno);
+        logger.info(String.valueOf(boardDTO));
+        for (String fileName : boardDTO.getFileNames()) {
+            logger.info(fileName);
+        }
+
+    }
+
+    // 게시글 수정
+    @Test
+    public void testModify(){
+        // 변경에 필요한 데이터
+        BoardDTO boardDTO = BoardDTO.builder()
+                .bno(106L)
+                .title("수정_파일업로드 테스트")
+                .content("수정+_파일업로드 테스트 내용")
+                .build();
+
+        // 첨부파일 하나 추가
+        boardDTO.setFileNames(Arrays.asList(UUID.randomUUID() + "_zzz.jpg"));
+        boardService.modify(boardDTO);
+    }
+    
+    // 게시글 삭제
+    @Test
+    public void testRemoveAll(){
+        Long bno = 106L;
+        boardService.remove(bno);
     }
 }

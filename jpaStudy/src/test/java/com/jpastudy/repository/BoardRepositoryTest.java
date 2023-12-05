@@ -1,6 +1,7 @@
 package com.jpastudy.repository;
 
 import com.jpastudy.domain.Board;
+import com.jpastudy.domain.BoardImage;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.Commit;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -99,6 +102,35 @@ public class BoardRepositoryTest {
 
         for (int i = 0; i < 3; i++) {
             board.addImage(UUID.randomUUID().toString(), "file" + i + ".jpg");
+        }
+        boardRepository.save(board);
+    }
+
+    // 이미지 조회
+    @Test
+    public void testReadImages(){
+        //반드시 존재하는 bno로 확인
+        Optional<Board> result = boardRepository.findByIdWithImages(104L);
+        Board board = result.orElseThrow();
+        logger.info(String.valueOf(board));
+        logger.info("-------------------------------------------");
+        for (BoardImage boardImage : board.getImageSet()){
+            logger.info(String.valueOf(boardImage));
+        }
+    }
+
+    // 첨부파일 수정
+    @Transactional
+    @Commit
+    @Test
+    public void testModifyImage(){
+        Optional<Board> result = boardRepository.findById(105L);
+        Board board = result.orElseThrow();
+        // 기존의 첨부파일들은 삭제
+        board.clearImages();
+        // 새로운 첨부파일들
+        for (int i = 0; i<2; i++) {
+            board.addImage(UUID.randomUUID().toString(), "updatefile" + i + ".jpg");
         }
         boardRepository.save(board);
     }

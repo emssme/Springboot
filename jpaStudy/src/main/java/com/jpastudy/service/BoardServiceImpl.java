@@ -25,16 +25,17 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Long register(BoardDTO boardDTO) {
-        Board board = modelMapper.map(boardDTO,Board.class);        // BoardDTO를 Board 객체로 변환
+        Board board = dtoToEntity(boardDTO);            // BoardDTO를 Board 객체로 변환
         Long bno = boardRepository.save(board).getBno();
         return bno;
     }
 
     @Override
     public BoardDTO readOne(Long bno) {
-        Optional<Board> result = boardRepository.findById(bno);
+        // board_image 까지 조인 처리되는 findByWithImages()를 이용
+        Optional<Board> result = boardRepository.findByIdWithImages(bno);
         Board board = result.orElseThrow();
-        BoardDTO boardDTO = modelMapper.map(board, BoardDTO.class);
+        BoardDTO boardDTO = entityToDTO(board);
         return boardDTO;
     }
 
@@ -43,11 +44,20 @@ public class BoardServiceImpl implements BoardService{
         Optional<Board> result = boardRepository.findById(boardDTO.getBno());
         Board board = result.orElseThrow();
         board.change(boardDTO.getTitle(), boardDTO.getContent());
+
+        // 첨부파일의 처리
+        board.clearImages();
+        if (boardDTO.getFileNames() != null) {
+            for (String fileName : boardDTO.getFileNames()) {
+                String[] arr = fileName.split("_");
+                board.addImage(arr[0], arr[1]);
+            }
+        }
         boardRepository.save(board);
     }
 
     @Override
-    public void remover(Long bno) {
+    public void remove(Long bno) {
         boardRepository.deleteById(bno);
     }
 
@@ -59,4 +69,5 @@ public class BoardServiceImpl implements BoardService{
         pageDTO.entity2dto(result, BoardDTO.class);
         return pageDTO;
     }
+
 }

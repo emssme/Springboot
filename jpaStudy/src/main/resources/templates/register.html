@@ -26,10 +26,56 @@
                 </td>
             </tr>
             <tr>
+                <th> 이미지 첨부 </th>
+                <td> <button type="button"> AddFile </button></td>
+            </tr>
+            <tr>
                 <td colspan="2"><button type="submit">등록</button></td>
             </tr>
         </table>
     </form>
 </div>
+<script>
+    function uploadToServer(formObj) {
+        console.log("upload to server......");
+        console.log(formObj);
+
+        $.ajax({
+            url : '/upload',
+            type : 'POST',
+            data : formObj,
+            contentType : false,
+            processData : false,
+            success : function (response) {
+                // 성공 시 실행할 코드
+                console.log(response);
+                // 반환 된 데이터 활용
+            },
+            error : function(error) {
+                // 실패 시 실행할 코드
+                console.log(error);
+                // 오류 처리
+            }
+        })
+    }
+
+    function removeFileToServer(uuid, fileName) {
+        $.ajax({
+            url: `/remove/${uuid}_${fileName}`,
+            type: 'DELETE',
+            success: function(response) {
+                // 성공 시 실행할 코드
+                console.log(response);
+                // 반환된 데이터 활용
+            },
+            error: function(error) {
+                // 실패 시 실행할 코드
+                console.error(error);
+                // 오류 처리
+            }
+        });
+    }
+
+</script>
 </body>
 </html>

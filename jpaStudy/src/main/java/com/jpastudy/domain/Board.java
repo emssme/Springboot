@@ -40,11 +40,13 @@ public class Board extends BaseEntity{
     @BatchSize(size = 20)                                   // 한 번에 가져올 Entity 의 수를 20으로 제한
     private Set<BoardImage> imageSet = new HashSet<>();
 
-    public void addImage(String uuid, String fileName) {
+    public void addImage(String uuid, String fileName){
         BoardImage boardImage = BoardImage.builder()
                 .uuid(uuid)
                 .fileName(fileName)
-                .board(this).ord(imageSet.size()).build();
+                .board(this)
+                .ord(imageSet.size())
+                .build();
         imageSet.add(boardImage);
     }
     public void clearImages() {
